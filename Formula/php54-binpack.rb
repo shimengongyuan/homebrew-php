@@ -1,6 +1,6 @@
-require File.join(File.dirname(__FILE__), 'abstract-php-extension')
+require File.expand_path("../../Abstract/abstract-php-extension", __FILE__)
 
-class Php54Binpack < AbstractPhp55Extension
+class Php54Binpack < AbstractPhp54Extension
   init
   homepage 'http://pecl.php.net/package/binpack'
   url 'http://pecl.php.net/get/binpack-1.0.1.tgz'

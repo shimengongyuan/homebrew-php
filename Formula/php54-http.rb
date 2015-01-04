@@ -1,10 +1,10 @@
-require File.join(File.dirname(__FILE__), 'abstract-php-extension')
+require File.expand_path("../../Abstract/abstract-php-extension", __FILE__)
 
 class Php54Http < AbstractPhp54Extension
   init
   homepage 'http://pecl.php.net/package/pecl_http'
-  url 'http://pecl.php.net/get/pecl_http-2.0.7.tgz'
-  sha1 '477e6ac84d16fb813c4bbb324c1763a899e11999'
+  url 'http://pecl.php.net/get/pecl_http-2.1.4.tgz'
+  sha1 'bcd2b925207ba06aa31608bd0b20008093caa61f'
   head 'https://git.php.net/repository/pecl/http/pecl_http.git'
 
   depends_on 'curl' => :build
@@ -39,9 +39,6 @@ class Php54Http < AbstractPhp54Extension
     write_config_file if build.with? "config-file"
 
     # remove old configuration file
-    old_config_filepath = config_scandir_path / "ext-http.ini"
-    if File.exist?(old_config_filepath)
-      system "unlink " + old_config_filepath
-    end
+    rm_f config_scandir_path / "ext-http.ini"
   end
 end

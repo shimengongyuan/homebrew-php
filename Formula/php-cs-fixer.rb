@@ -5,22 +5,18 @@ require File.expand_path("../../Requirements/phar-building-requirement", __FILE_
 
 class PhpCsFixer < Formula
   homepage 'http://cs.sensiolabs.org'
-  url 'https://github.com/fabpot/PHP-CS-Fixer/archive/v0.5.4.tar.gz'
-  sha1 'd53a25dc58f97b8c2ce5d700c396578907bd2d81'
-  head 'https://github.com/fabpot/PHP-CS-Fixer.git'
+  url 'https://github.com/FriendsOfPHP/PHP-CS-Fixer/archive/v1.2.tar.gz'
+  sha1 '380ff67e67626559ac4f65df23f2d9037a1fbd40'
+  head 'https://github.com/FriendsOfPHP/PHP-CS-Fixer.git'
 
-  def self.init
-    depends_on PhpMetaRequirement
-    depends_on PharRequirement
-    depends_on PharBuildingRequirement
-    depends_on "composer"
-    depends_on "php53" if Formula['php53'].linked_keg.exist?
-    depends_on "php54" if Formula['php54'].linked_keg.exist?
-    depends_on "php55" if Formula['php55'].linked_keg.exist?
-    depends_on "php56" if Formula['php56'].linked_keg.exist?
-  end
-
-  init
+  depends_on PhpMetaRequirement
+  depends_on PharRequirement
+  depends_on PharBuildingRequirement
+  depends_on "composer"
+  depends_on "php53" if Formula['php53'].linked_keg.exist?
+  depends_on "php54" if Formula['php54'].linked_keg.exist?
+  depends_on "php55" if Formula['php55'].linked_keg.exist?
+  depends_on "php56" if Formula['php56'].linked_keg.exist?
 
   def install
     File.open("genphar.php", 'w') {|f| f.write(phar_stub) }
@@ -40,7 +36,7 @@ class PhpCsFixer < Formula
     bin.install_symlink sh
   end
 
-  def test
+  test do
     system 'php-cs-fixer --version'
   end
 

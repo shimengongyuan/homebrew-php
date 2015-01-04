@@ -1,16 +1,16 @@
-require File.join(File.dirname(__FILE__), 'abstract-php-extension')
+require File.expand_path("../../Abstract/abstract-php-extension", __FILE__)
 
 class Php55Ioncubeloader < AbstractPhp55Extension
   init
   homepage 'http://www.ioncube.com/loaders.php'
   if Hardware.is_64_bit?
-    version '4.6.1'
+    version '4.7.1'
     url 'http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_dar_x86-64.tar.gz'
-    sha1 '1c4879d248b6bc472a8cd215026c02bec98f6f2f'
+    sha1 '1d255625981c1117195bf526d431852104e57c9c'
   else
-    version '4.6.1'
+    version '4.7.1'
     url 'http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_dar_x86.tar.gz'
-    sha1 'ad2dac48d5889886fccbebb81d3da8db8d79f717'
+    sha1 'dcdff3b742a4ff04c71b52f7ad3c8fb74b1e845f'
   end
 
   def extension_type; "zend_extension"; end

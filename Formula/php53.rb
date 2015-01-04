@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'abstract-php')
+require File.expand_path("../../Abstract/abstract-php", __FILE__)
 
 class Php53 < AbstractPhp
   init
@@ -22,10 +22,12 @@ class Php53 < AbstractPhp
     raise "phpdbg is not supported for this version of PHP"
   end
 
+  option 'disable-zend-multibyte', 'Disable auto-detection of Unicode encoded scripts'
+
   def install
     # files need to be regenerated to fix issue #962
     system "rm Zend/zend_{language,ini}_parser.[ch]"
-    super()
+    super
   end
 
   def install_args
@@ -35,16 +37,14 @@ class Php53 < AbstractPhp
   end
 
   def php_version
-    5.3
+    "5.3"
   end
 
   def php_version_path
-    53
+    "53"
   end
 
-  def patches
-    DATA
-  end
+  patch :DATA
 end
 
 __END__

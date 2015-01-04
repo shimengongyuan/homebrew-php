@@ -4,9 +4,10 @@ require File.expand_path("../../Requirements/composer-requirement", __FILE__)
 
 class Composer < Formula
   homepage 'http://getcomposer.org'
-  url 'http://getcomposer.org/download/1.0.0-alpha8/composer.phar'
-  sha1 '6eefa41101a2d1a424c3d231a1f202dfe6f09cf8'
-  version '1.0.0-alpha8'
+  head 'https://getcomposer.org/composer.phar'
+  url 'http://getcomposer.org/download/1.0.0-alpha9/composer.phar'
+  sha1 'c0917158e84c867ce69753fcbc04eb7c45bb58bb'
+  version '1.0.0-alpha9'
 
   depends_on PhpMetaRequirement
   depends_on ComposerRequirement
@@ -14,7 +15,7 @@ class Composer < Formula
   def install
     libexec.install "composer.phar"
     sh = libexec + "composer"
-    sh.write("#!/usr/bin/env bash\n\n/usr/bin/env php -d allow_url_fopen=On -d detect_unicode=Off #{libexec}/composer.phar $*")
+    sh.write("#!/usr/bin/env bash\n\n/usr/bin/env php -d allow_url_fopen=On -d detect_unicode=Off #{libexec}/composer.phar \"$@\"")
     chmod 0755, sh
     bin.install_symlink sh
   end

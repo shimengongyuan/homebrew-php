@@ -2,19 +2,13 @@ require 'formula'
 require File.join(File.dirname(__FILE__), 'abstract-php-version')
 
 class UnsupportedPhpApiError < RuntimeError
-  attr :name
-
-  def initialize name
-    @name = name
+  def initialize
     super "Unsupported PHP API Version"
   end
 end
 
 class InvalidPhpizeError < RuntimeError
-  attr :name
-
-  def initialize (installed_php_version, required_php_version)
-    @name = name
+  def initialize(installed_php_version, required_php_version)
     super <<-EOS.undent
       Version of phpize (PHP#{installed_php_version}) in $PATH does not support building this extension
              version (PHP#{required_php_version}). Consider installing  with the `--without-homebrew-php` flag.
@@ -23,43 +17,23 @@ class InvalidPhpizeError < RuntimeError
 end
 
 class AbstractPhpExtension < Formula
-  def initialize(name, *args)
-    begin
-      raise "One does not simply install an AbstractPhpExtension" if name == "abstract-php-extension"
-      sup = super
+  def initialize(*)
+    super
 
-      if build.without? 'homebrew-php'
-        installed_php_version = nil
-        i = IO.popen("#{phpize} -v")
-        out = i.readlines.join("")
-        i.close
-        { 53 => 20090626, 54 => 20100412 }.each do |v, api|
-          installed_php_version = v.to_s if out.match(/#{api}/)
-        end
-
-        raise UnsupportedPhpApiError.new if installed_php_version.nil?
-
-        required_php_version = php_branch.sub('.', '').to_s
-        unless installed_php_version == required_php_version
-          raise InvalidPhpizeError.new(installed_php_version, required_php_version)
-        end
+    if build.without? 'homebrew-php'
+      installed_php_version = nil
+      i = IO.popen("#{phpize} -v")
+      out = i.readlines.join("")
+      i.close
+      { 53 => 20090626, 54 => 20100412, 55 => 20121113 }.each do |v, api|
+        installed_php_version = v.to_s if out.match(/#{api}/)
       end
 
-      sup
-    rescue Exception => e
-      # Hack so that we pass all brew doctor tests
-      reraise = e.backtrace.select { |l| l.match(/(doctor|cleanup|leaves|uses)\.rb/) }
-      raise e if reraise.empty?
-    end
-  end
+      raise UnsupportedPhpApiError.new if installed_php_version.nil?
 
-  # Hack to allow 'brew uses' to work, which requires deps, version, and requirements
-  %w(deps requirements version).each do |method|
-    define_method(method) do
-      if defined?(active_spec) && active_spec.respond_to?(method)
-        active_spec.send(method)
-      else
-        method === 'version' ? 'abstract' : []
+      required_php_version = php_branch.sub('.', '').to_s
+      unless installed_php_version == required_php_version
+        raise InvalidPhpizeError.new(installed_php_version, required_php_version)
       end
     end
   end
@@ -72,11 +46,12 @@ class AbstractPhpExtension < Formula
   end
 
   def php_branch
-    matches = /^Php5([3-9]+)/.match(self.class.name)
+    class_name = self.class.name.split("::").last
+    matches = /^Php5([3-9]+)/.match(class_name)
     if matches
       "5." + matches[1]
     else
-      raise "Unable to guess PHP branch for #{self.class.name}"
+      raise "Unable to guess PHP branch for #{class_name}"
     end
   end
 
@@ -85,19 +60,16 @@ class AbstractPhpExtension < Formula
   end
 
   def safe_phpize
-    cmd = ''
-    cmd << "PHP_AUTOCONF=\"#{Formula['autoconf'].opt_prefix}/bin/autoconf\" "
-    cmd << "PHP_AUTOHEADER=\"#{Formula['autoconf'].opt_prefix}/bin/autoheader\" "
-    cmd << phpize
-
-    system cmd
+    ENV["PHP_AUTOCONF"] = "#{Formula["autoconf"].opt_bin}/autoconf"
+    ENV["PHP_AUTOHEADER"] = "#{Formula["autoconf"].opt_bin}/autoheader"
+    system phpize
   end
 
   def phpize
     if build.without? 'homebrew-php'
       "phpize"
     else
-      "#{(Formula[php_formula]).bin}/phpize"
+      "#{Formula[php_formula].opt_bin}/phpize"
     end
   end
 
@@ -105,7 +77,7 @@ class AbstractPhpExtension < Formula
     if build.without? 'homebrew-php'
       "php.ini presented by \"php --ini\""
     else
-      "#{(Formula[php_formula]).config_path}/php.ini"
+      "#{Formula[php_formula].config_path}/php.ini"
     end
   end
 
@@ -113,16 +85,17 @@ class AbstractPhpExtension < Formula
     if build.without? 'homebrew-php'
       ""
     else
-      "--with-php-config=#{(Formula[php_formula]).bin}/php-config"
+      "--with-php-config=#{Formula[php_formula].opt_bin}/php-config"
     end
   end
 
   def extension
-    matches = /^Php5[3-9](.+)/.match(self.class.name)
+    class_name = self.class.name.split("::").last
+    matches = /^Php5[3-9](.+)/.match(class_name)
     if matches
       matches[1].downcase
     else
-      raise "Unable to guess PHP extension name for #{self.class.name}"
+      raise "Unable to guess PHP extension name for #{class_name}"
     end
   end
 

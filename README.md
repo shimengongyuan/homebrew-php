@@ -1,4 +1,4 @@
-# Homebrew-PHP
+# Homebrew PHP
 
 A centralized repository for PHP-related brews.
 
@@ -43,8 +43,8 @@ Doing all of these might be a hassle, but will more than likely ensure you eithe
 If you have recently upgraded your Mac OS X version or Xcode, you may have some compilation or missing libraries issues. The following information may help you solve most of the problems:
 
 - Ensure you have properly upgraded CLT depending on your Xcode version.
-- Proceed step by step to isolate the responsible formula. If you need to install `php55` and `php55-imagick`, don't do `brew install php55 php55-imagick`. Just do `brew install php55`, ensure everything is working as expected, check the output of `phpinfo()`, restart your Apache server with `sudo apachectl restart`. Then you can install the next formula `brew install php55-imagick`.
-- If `php53`, `php54` or `php55` build fails, remove all their dependencies and reinstall the formula. For instance: If `brew install php55` fails, do the following: `brew rm php55 && brew deps php55 | xargs brew rm`. If `brew install php55 --with-gmp` fails, do the following: `brew rm php55 && brew deps php55 --with-gmp | xargs brew rm`. Then reinstall a clean version of the formula: `brew update && brew upgrade && brew install php55`.
+- Proceed step by step to isolate the responsible formula. If you need to install `php56` and `php56-imagick`, don't do `brew install php56 php56-imagick`. Just do `brew install php56`, ensure everything is working as expected, check the output of `phpinfo()`, restart your Apache server with `sudo apachectl restart`. Then you can install the next formula `brew install php56-imagick`.
+- If `php53`, `php55` or `php56` build fails, remove all their dependencies and reinstall the formula. For instance: If `brew install php56` fails, do the following: `brew rm php56 && brew deps php56 | xargs brew rm`. If `brew install php56 --with-gmp` fails, do the following: `brew rm php56 && brew deps php56 --with-gmp | xargs brew rm`. Then reinstall a clean version of the formula: `brew update && brew upgrade && brew install php56`.
 - If an extension build fails, try also to remove all its dependencies and reinstall it.
 - Sometimes it appears that a formula is not available anymore, do the following: `brew tap --repair`.
 
@@ -89,7 +89,7 @@ This will help us diagnose your issues much quicker, as well as find commonaliti
 
 ## Background
 
-This repository contains **PHP-related** formulae for [Homebrew](https://github.com/mxcl/homebrew).
+This repository contains **PHP-related** formulae for [Homebrew](https://github.com/Homebrew/homebrew).
 
 (This replaces the PHP formulae that used to live under [adamv's homebrew-alt repository](https://github.com/adamv/homebrew-alt).)
 
@@ -97,7 +97,7 @@ The purpose of this repository is to allow PHP developers to quickly retrieve wo
 
 ## Requirements
 
-* [Homebrew](https://github.com/mxcl/homebrew)
+* [Homebrew](https://github.com/Homebrew/homebrew)
 * Snow Leopard, Lion, Mountain Lion, Mavericks. Untested everywhere else.
 * The Homebrew `dupes` tap - `brew tap homebrew/dupes`
 * The Homebrew `versions` tap - `brew tap homebrew/versions`
@@ -127,13 +127,13 @@ brew tap homebrew/homebrew-php
 **Note:** For a list of available configuration options run:
 
 ```sh
-brew options php55
+brew options php56
 ```
 
-Once the tap is installed, you can install `php53`, `php54`, `php55`, or any formulae you might need via:
+Once the tap is installed, you can install `php53`, `php54`, `php55`, `php56`, or any formulae you might need via:
 
 ```sh
-brew install php55
+brew install php56
 ```
 
 That's it!
@@ -148,49 +148,49 @@ If using Apache, you will need to update the `LoadModule` call. For convenience,
 
 ```sh
 # /etc/apache2/httpd.conf
-# Swapping from PHP 5.4 to PHP 5.5
+# Swapping from PHP 5.5 to PHP 5.6
 # $HOMEBREW_PREFIX is normally `/usr/local`
-# LoadModule php5_module    $HOMEBREW_PREFIX/Cellar/php54/5.4.31/libexec/apache2/libphp5.so
-LoadModule php5_module    $HOMEBREW_PREFIX/Cellar/php55/5.5.15/libexec/apache2/libphp5.so
+# LoadModule php5_module    $HOMEBREW_PREFIX/Cellar/php55/5.5.18/libexec/apache2/libphp5.so
+LoadModule php5_module    $HOMEBREW_PREFIX/Cellar/php56/5.6.4/libexec/apache2/libphp5.so
 ```
 
 If using FPM, you will need to unload the `plist` controlling php, or manually stop the daemon, via your command line:
 
 ```sh
-# Swapping from PHP 5.4 to PHP 5.5
+# Swapping from PHP 5.5 to PHP 5.6
 # $HOMEBREW_PREFIX is normally `/usr/local`
-cp $HOMEBREW_PREFIX/Cellar/php55/5.5.15/homebrew.mxcl.php55.plist ~/Library/LaunchAgents/
-launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php54.plist
-launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php55.plist
+cp $HOMEBREW_PREFIX/Cellar/php56/5.6.4/homebrew.mxcl.php56.plist ~/Library/LaunchAgents/
+launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php55.plist
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php56.plist
 ```
 
 If you would like to swap the PHP you use on the command line, you should update the `$PATH` variable in either your `.profile`, `.zshrc`, `.bashrc` or `.bash_profile`:
 
 ```sh
-# Swapping from PHP 5.4 to PHP 5.5
-# export PATH="$(brew --prefix homebrew/php/php54)/bin:$PATH"
-export PATH="$(brew --prefix homebrew/php/php55)/bin:$PATH"
+# Swapping from PHP 5.5 to PHP 5.6
+# export PATH="$(brew --prefix homebrew/php/php55)/bin:$PATH"
+export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
 ```
 
 Please be aware that you must make this type of change EACH time you swap between PHP `minor` versions. You will typically only need to update the Apache/FPM when upgrading your PHP `patch` version.
 
 ### PEAR Extensions
 
-If installing `php53`, `php54` or `php55`, please note that all extensions installed with the included `pear` will be installed to the respective php's bin path. For example, supposing you installed `PHP_CodeSniffer` as follows:
+If installing `php53`, `php54`, `php55` or `php56`, please note that all extensions installed with the included `pear` will be installed to the respective php's bin path. For example, supposing you installed `PHP_CodeSniffer` as follows:
 
 ```sh
 pear install PHP_CodeSniffer
 ```
 
-It would be nice to be able to use the `phpcs` command via command-line, or other utilities. You will need to add the installed php's `bin` directory to your path. The following would be added to your `.bashrc` or `.bash_profile` when running the `php55` brew:
+It would be nice to be able to use the `phpcs` command via command-line, or other utilities. You will need to add the installed php's `bin` directory to your path. The following would be added to your `.bashrc` or `.bash_profile` when running the `php56` brew:
 
 ```sh
-export PATH="$(brew --prefix php55)/bin:$PATH"
+export PATH="$(brew --prefix php56)/bin:$PATH"
 ```
 
 Some caveats:
 
-- Remember to use the proper PHP version in that export. So if you installed the `php54` formula, use `php54` instead of `php55` in the export.
+- Remember to use the proper PHP version in that export. So if you installed the `php55` formula, use `php55` instead of `php56` in the export.
 - Updating your installed PHP will result in the binaries no longer existing within your path. In such cases, you will need to reinstall the pear extensions. Alternatives include installing `pear` outside of `homebrew-php` or using the `homebrew-php` version of your extension.
 - Uninstalling your `homebrew-php` PHP formula will also remove the extensions.
 
@@ -207,14 +207,14 @@ If you have any concerns as to whether your formula belongs in PHP, just open a 
 
 ### PHP Extension definitions
 
-PHP Extensions MUST be prefixed with `phpVERSION`. For example, instead of the `Solr` formula for PHP55 in `solr.rb`, we would have `Php55Solr` inside of `php55-solr.rb`. This is to remove any possible conflicts with mainline Homebrew formulae.
+PHP Extensions MUST be prefixed with `phpVERSION`. For example, instead of the `Solr` formula for PHP55 in `solr.rb`, we would have `Php55Solr` inside of `php56-solr.rb`. This is to remove any possible conflicts with mainline Homebrew formulae.
 
-The template for the `php55-example` pecl extension would be as follows. Please use it as an example for any new extension formulae:
+The template for the `php56-example` pecl extension would be as follows. Please use it as an example for any new extension formulae:
 
 ```ruby
-require File.join(File.dirname(__FILE__), 'abstract-php-extension')
+require File.expand_path("../../Abstract/abstract-php-extension", __FILE__)
 
-class Php55Example < AbstractPhp55Extension
+class Php56Example < AbstractPhp56Extension
   init
   homepage 'http://pecl.php.net/package/example'
   url 'http://pecl.php.net/get/example-1.0.tgz'
@@ -246,9 +246,7 @@ Please note that your formula installation may deviate significantly from the ab
 
 The ordering of formula attributes, such as the `homepage`, `url`, `sha1`, etc. should follow the above order for consistency. The `version` is only included when the URL does not include a version in the filename. `head` installations are not required.
 
-All official PHP extensions should be built for all stable versions of PHP included in `homebrew-php`. These versions are `5.3.29`, `5.4.31` and `5.5.15`.
-
-Please also consider adding PHP extensions for PHP 5.6: `5.6.0-rc4`.
+All official PHP extensions should be built for all stable versions of PHP included in `homebrew-php`. These versions are `5.3.29`, `5.4.36`, `5.5.20` and `5.6.4`.
 
 ## Todo
 

@@ -1,10 +1,10 @@
-require File.join(File.dirname(__FILE__), 'abstract-php-extension')
+require File.expand_path("../../Abstract/abstract-php-extension", __FILE__)
 
 class Php54Blitz < AbstractPhp54Extension
   init
   homepage 'http://alexeyrybak.com/blitz/blitz_en.html'
-  url 'http://alexeyrybak.com/blitz/all-releases/blitz-0.8.11.tar.gz'
-  sha1 '4bca63ebf9f33c5d76a3db7412f9a5ed8be152cd'
+  url 'http://alexeyrybak.com/blitz/all-releases/blitz-0.8.14.tar.gz'
+  sha1 'f81cf59139849df553c40ea17667de107d48e9b7'
 
   head 'https://github.com/alexeyrybak/blitz.git'
 

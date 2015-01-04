@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'abstract-php')
+require File.expand_path("../../Abstract/abstract-php", __FILE__)
 
 class Php56 < AbstractPhp
   init
@@ -15,11 +15,17 @@ class Php56 < AbstractPhp
 
   def install_args
     args = super
-    args << "--with-homebrew-openssl" if MacOS.version == :leopard
     args << "--enable-zend-signals"
     args << "--enable-dtrace" if build.without? 'phpdbg'
     # dtrace is not compatible with phpdbg: https://github.com/krakjoe/phpdbg/issues/38
-    args << "--disable-phpdbg" if build.without? 'phpdbg'
+    if build.without? 'phpdbg'
+      args << "--disable-phpdbg"
+    else
+      args << "--enable-phpdbg"
+      if build.with? 'debug'
+        args << "--enable-phpdbg-debug"
+      end
+    end
     if build.include? 'disable-opcache'
       args << "--disable-opcache"
     else
@@ -28,10 +34,10 @@ class Php56 < AbstractPhp
   end
 
   def php_version
-    5.6
+    "5.6"
   end
 
   def php_version_path
-    56
+    "56"
   end
 end

@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'abstract-php')
+require File.expand_path("../../Abstract/abstract-php", __FILE__)
 
 class Php55 < AbstractPhp
   init
@@ -28,7 +28,6 @@ class Php55 < AbstractPhp
 
   def install_args
     args = super
-    args << "--with-homebrew-openssl" if MacOS.version == :leopard
     args << "--enable-zend-signals"
     # dtrace is not compatible with phpdbg: https://github.com/krakjoe/phpdbg/issues/38
     args << "--enable-dtrace" if build.without? 'phpdbg'
@@ -52,10 +51,10 @@ class Php55 < AbstractPhp
   end
 
   def php_version
-    5.5
+    "5.5"
   end
 
   def php_version_path
-    55
+    "55"
   end
 end

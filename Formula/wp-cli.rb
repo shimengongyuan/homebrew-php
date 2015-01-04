@@ -3,8 +3,8 @@ require 'formula'
 class WpCli < Formula
   homepage 'https://github.com/wp-cli/wp-cli'
   head 'https://github.com/wp-cli/wp-cli.git'
-  url 'https://github.com/wp-cli/wp-cli/archive/v0.16.0.tar.gz'
-  sha1 '4112e321f18fc171863f2fa4d670665fcc287084'
+  url 'https://github.com/wp-cli/wp-cli/archive/v0.17.1.tar.gz'
+  sha1 '2b9f2d43970a0d4a1baba0527df72a41a5468d4a'
 
   option 'without-bash-completion', "Don't install bash completion"
   option 'without-package-index', "Don't add package index repository (http://wp-cli.org/package-index)"
@@ -23,7 +23,7 @@ class WpCli < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/wp --info"
   end
 end

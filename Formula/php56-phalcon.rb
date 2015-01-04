@@ -1,10 +1,10 @@
-require File.join(File.dirname(__FILE__), 'abstract-php-extension')
+require File.expand_path("../../Abstract/abstract-php-extension", __FILE__)
 
 class Php56Phalcon < AbstractPhp56Extension
   init
   homepage 'http://phalconphp.com/'
-  url 'https://github.com/phalcon/cphalcon/archive/phalcon-v1.3.2.tar.gz'
-  sha1 '64eea8e384363a5582a59a910b1327dc97b7d355'
+  url 'https://github.com/phalcon/cphalcon/archive/phalcon-v1.3.4.tar.gz'
+  sha1 '2b1c887ed68fb3ee1f2d5faf7b48c79d60d57c8d'
   head 'https://github.com/phalcon/cphalcon.git'
 
   depends_on 'pcre'

@@ -2,8 +2,8 @@ require 'formula'
 
 class Phpmyadmin < Formula
   homepage 'http://www.phpmyadmin.net'
-  url 'https://github.com/phpmyadmin/phpmyadmin/archive/RELEASE_4_2_6.tar.gz'
-  sha256 '20546f9a307a87fb8910f4652fff8fcbbc5150e91f1d481fa4f782f291f8705d'
+  url 'https://github.com/phpmyadmin/phpmyadmin/archive/RELEASE_4_3_4.tar.gz'
+  sha256 '0d29bec8b0190297ec4670c76c1632e16ab0a9ed1b1c86ca5b6c6db80a85a951'
   head 'https://github.com/phpmyadmin/phpmyadmin.git'
 
   if build.with? 'mcrypt'
@@ -19,6 +19,11 @@ class Phpmyadmin < Formula
 
   def install
     (share+'phpmyadmin').install Dir['*']
+
+    if !(File.exists?(etc+'phpmyadmin.config.inc.php'))
+      cp (share+'phpmyadmin/config.sample.inc.php'), (etc+'phpmyadmin.config.inc.php')
+    end
+    ln_s (etc+'phpmyadmin.config.inc.php'), (share+'phpmyadmin/config.inc.php')
   end
 
   def caveats; <<-EOS.undent
@@ -39,7 +44,8 @@ class Phpmyadmin < Formula
 
     More documentation : file://#{share}/phpmyadmin/doc/
 
-    Don't forget to copy config.sample.inc.php to config.inc.php and :
+    Configuration has been copied to #{etc}/phpmyadmin.config.inc.php
+    Don't forget to:
       - change your secret blowfish
       - uncomment the configuration lines (pma, pmapass ...)
 

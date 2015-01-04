@@ -1,11 +1,11 @@
-require File.join(File.dirname(__FILE__), 'abstract-php-extension')
+require File.expand_path("../../Abstract/abstract-php-extension", __FILE__)
 
 class Php56Twig < AbstractPhp56Extension
   init
   homepage 'http://twig.sensiolabs.org/'
-  url 'https://github.com/fabpot/Twig/archive/v1.15.1.tar.gz'
-  sha1 '6431a8544f3a95f01d3e36d723daec037131629a'
-  head 'https://github.com/fabpot/Twig.git'
+  url 'https://github.com/twigphp/Twig/archive/v1.16.2.tar.gz'
+  sha1 '926ff53dad6ccd2560a562942d1dfd1357460cc0'
+  head 'https://github.com/twigphp/Twig.git'
 
   def install
     ENV.universal_binary if build.universal?

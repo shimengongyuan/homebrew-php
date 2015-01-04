@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'abstract-php-extension')
+require File.expand_path("../../Abstract/abstract-php-extension", __FILE__)
 
 class Php56Imagick < AbstractPhp56Extension
   init
@@ -10,15 +10,13 @@ class Php56Imagick < AbstractPhp56Extension
   depends_on 'pkg-config' => :build
   depends_on 'imagemagick'
 
-  def patches
-    # Rationale: Fix for the header file MagickWand.h
-    #     could not be located error during ./configure
-    #
-    # Original error message:
-    #     checking for MagickWand.h header file...
-    #     configure: error: Cannot locate header file MagickWand.h
-    DATA
-  end
+  # Rationale: Fix for the header file MagickWand.h
+  #     could not be located error during ./configure
+  #
+  # Original error message:
+  #     checking for MagickWand.h header file...
+  #     configure: error: Cannot locate header file MagickWand.h
+  patch :DATA
 
   def install
     Dir.chdir "imagick-#{version}" unless build.head?

@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'abstract-php-extension')
+require File.expand_path("../../Abstract/abstract-php-extension", __FILE__)
 
 class Php56Wbxml < AbstractPhp56Extension
   init
@@ -9,10 +9,8 @@ class Php56Wbxml < AbstractPhp56Extension
 
   depends_on 'libwbxml'
 
-  def patches
-    # php-wbxml looks for the libwbxml headers in the wrong location
-    DATA
-  end
+  # php-wbxml looks for the libwbxml headers in the wrong location
+  patch :DATA
 
   def install
     Dir.chdir "wbxml-#{version}" unless build.head?
